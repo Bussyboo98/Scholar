@@ -28,7 +28,7 @@ def evaluate_essay(essay_text):
     # Split the essay into chunks
     chunks = chunk_essay(essay_text)
     
-    # Score each chunk and calculate the average predicted score
+ 
     predicted_scores = []
     for chunk in chunks:
         encoding = tokenizer(
