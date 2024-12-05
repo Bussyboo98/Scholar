@@ -1,4 +1,5 @@
 Scholar 📝
+
 Scholar is a Python and Django-based web application that evaluates and scores essays using machine learning. It provides users with detailed feedback on essay content, grammar, and structure, helping students improve their writing skills.
 
 Features
@@ -23,7 +24,7 @@ Clone the Repository
 
 
 git clone https://github.com/your-username/scholar.git  
-cd essay_evaluation
+cd essay_evaluator
 Set up a Virtual Environment
 
 python -m venv venv  
