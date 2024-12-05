@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <title>Scholar</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-scholar.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css' %}" />
+
+
+
+</head>
+
+<body>
+
+
+    <!-- <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div> -->
+
+
+
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'index' %}" class="logo">
+                            <h1>Scholar</h1>
+                        </a>
+                        {% if user.is_authenticated %}
+                        <br>
+                        Welcome,
+                        <h6 style="font-weight: 600;">{{ request.user.first_name }} {{ request.user.last_name }}</h6>
+                        {% else %}
+                        {% endif %}
+
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="{% url 'index' %}" class="active">Home</a></li>
+                            {% if user.is_authenticated %}
+
+                            <li class="scroll-to-section"><a href="{% url 'evaluate' %}">Evaluate Now!</a></li>
+
+                            <li class="scroll-to-section"><a class="active" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                        class="bi bi-door-closed" viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2zm1 13h8V2H4v13z" />
+                                        <path d="M9 9a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" />
+                                    </svg>
+
+                                    <span class="fs15 fw500">Logout</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
+                            {% endif %}
+
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <div class="main-banner" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="owl-carousel owl-banner owl-loaded owl-drag" style="height: 250px;">
+                        <div class="owl-stage-outer">
+                            <div class="owl-stage"
+                                style="transition: all; width: 8022px;  transform: translate3d(-2292px, 0px, 0px);">
+                                <div class="owl-item cloned" style="width: 1116px; margin-right: 30px;">
+                                    <div class="item item-2" style="height: 300px;">
+                                        <div class="header-text">
+                                            <span class="category">Intelligent Scoring</span>
+                                            <h2>Your Feedback</h2>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header text-white text-center" style="background-color: #7a6ad8;">
+                        <h3 class="card-title">Essay Feedback</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Feedback Scores -->
+                        <div class="row mb-3">
+                            <div class="col-md-4 mb-5 text-center">
+                                <h5 class="text-secondary">Predicted Score</h5>
+                                <p class="display-5">{{ feedback.predicted_score }}</p>
+                            </div>
+                            <div class="progress col-md-8" style="height: 25px;border-radius: 30px; padding: 0;">
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: {{ feedback.predicted_progress_width }}%;" 
+                                     aria-valuenow="{{ feedback.predicted_score }}" aria-valuemin="0" aria-valuemax="10">
+                                    Predicted Score: {{ feedback.predicted_score }}
+                                </div>
+                            </div>
+                           
+                            <div class="col-md-4 mb-5 text-center">
+                                <h5 class="text-secondary">Content Score</h5>
+                                <p class="display-5">{{ feedback.content_score }}</p>
+                            </div>
+                            <div class="progress col-md-8" style="height: 25px;border-radius: 30px; padding: 0;">
+                                <div class="progress-bar bg-info" role="progressbar" 
+                                     style="width: {{ feedback.content_progress_width }}%;" 
+                                     aria-valuenow="{{ feedback.content_score }}" aria-valuemin="0" aria-valuemax="10">
+                                    Content Score: {{ feedback.content_score }}
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-5 text-center">
+                                <h5 class="text-secondary">Grammar Score</h5>
+                                <p class="display-5">{{ feedback.grammar_score }}</p>
+                            </div>
+                            <div class="progress col-md-8" style="height: 25px;border-radius: 30px; padding: 0;" >
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     style="width: {{ feedback.grammar_progress_width }}%;" 
+                                     aria-valuenow="{{ feedback.grammar_score }}" aria-valuemin="0" aria-valuemax="10">
+                                    Grammar Score: {{ feedback.grammar_score }}
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <h5 class="text-secondary">Structure Score</h5>
+                                <p class="display-5">{{ feedback.structure_score }}</p>
+                            </div>
+                            <div class="progress col-md-8" style="height: 25px;border-radius: 30px; padding: 0;">
+                                <div class="progress-bar bg-primary" role="progressbar" 
+                                     style="width: {{ feedback.structure_progress_width }}%;" 
+                                     aria-valuenow="{{ feedback.structure_score }}" aria-valuemin="0" aria-valuemax="10">
+                                    Structure Score: {{ feedback.structure_score }}
+                                </div>
+                            </div>
+                        </div>
+                    
+
+                        <!-- Structure Score -->
+                        <div class="row mb-4">
+                            <div class="col-md-12 text-center">
+                                <h5 class="text-secondary">Final Score</h5>
+                                <p class="display-4 text-success fw-bold">{{ feedback.final_score }}</p>
+                            </div>
+                        </div>
+                       
+
+                        <!-- Detailed Feedback -->
+                        <h4 class="text-center" style="color: #7a6ad8;">Detailed Feedback</h4>
+                        <p class="text-muted text-justify p-3 bg-light border rounded">{{ feedback.feedback }}</p>
+                    </div>
+                    
+                   
+                    
+                    <div class="card-footer text-center">
+                        <a href="{% url 'evaluate' %}" class="btn btn-primary">
+                            Evaluate Another Essay
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+
+    <footer>
+        <div class="container">
+            <div class="col-lg-12">
+                <p>Copyright © 2024 Scholar Organization. All rights reserved. &nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </footer>
+    <!-- Button trigger modal -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5" id="exampleModalLabel">My {{user.first_name}} {{user.last_name}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{user.first_name}} {{user.last_name}}, Are you sure you want to Logout, You could stay a while!!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{% url 'logout' %}"><button type="button" class="btn btn-primary">Yes I'm Sure</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets/js/counter.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+        </script>
+
+</body>
+
+</html>

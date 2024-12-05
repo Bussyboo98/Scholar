@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Your Essay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .loader {
+            display: inline-block;
+            margin: 20px 0;
+            width: 60px;
+            height: 60px;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .status-message {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .dots {
+            display: inline-block;
+        }
+        .dots span {
+            font-size: 18px;
+            animation: blink 1.5s infinite;
+        }
+        .dots span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .dots span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        .dots span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        @keyframes blink {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Processing Your Essay</h1>
+        <p>Please wait while we evaluate your essay. This may take a moment.</p>
+        <p><strong>Session ID:</strong> {{ session_id }}</p>
+
+        <!-- Loader Animation -->
+        <div class="loader"></div>
+
+        <!-- Dynamic Status Message -->
+        <div id="status-message" class="status-message">
+            Checking status<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+    </div>
+
+    <script>
+      const sessionID = "{{ session_id }}";
+      const statusURL = `{% url 'check_feedback' session_id=session_id %}`;
+      const feedbackURL = `{% url 'feedback' session_id=session_id %}`;
+
+      function checkStatus() {
+          fetch(statusURL)
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status === "complete") {
+                      window.location.href = feedbackURL;
+                  } else {
+                      document.getElementById("status-message").innerHTML = 
+                          "Evaluating your essay<span class='dots'><span>.</span><span>.</span><span>.</span></span>";
+                      setTimeout(checkStatus, 3000); // Re-check every 3 seconds
+                  }
+              })
+              .catch(error => {
+                  document.getElementById("status-message").innerText = "Error checking status. Retrying...";
+                  setTimeout(checkStatus, 3000);
+              });
+      }
+
+      checkStatus();
+    </script>
+</body>
+</html>
